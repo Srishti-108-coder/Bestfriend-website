@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mr. Chidchidu Mood Check</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ffdde1,#ee9ca7);
+  font-family:'Comic Sans MS', cursive;
+}
+
+.container{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  width:360px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+h1{
+  color:#ff4081;
+}
+
+button{
+  padding:12px 25px;
+  margin:10px;
+  font-size:18px;
+  border:none;
+  border-radius:25px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.1);
+}
+
+.yes{
+  background:#4caf50;
+  color:white;
+}
+
+.no{
+  background:#f44336;
+  color:white;
+}
+
+img{
+  width:200px;
+  margin-top:20px;
+  border-radius:15px;
+}
+
+#message{
+  margin-top:15px;
+  font-size:18px;
+  color:#e91e63;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Hi Mr. Chidchidu 😤<br>mood off hai kya?  huhhh boloo boloo🤔</h1>
+
+  <button class="yes" onclick="showHappy()">Yes 😑</button>
+  <button class="no" onclick="showAngry()">No 😇</button>
+
+  <div id="content"></div>
+  <div id="message"></div>
+
+  <!-- AUDIO -->
+  <audio id="audio">
+    <source src="https://www.soundjay.com/human/funny-laugh-02.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<script>
+// Ensure Tenor embed script is reloaded so dynamically-inserted embeds render
+function ensureTenorScriptReload(){
+  document.querySelectorAll('script[src^="https://tenor.com/embed.js"]').forEach(s=>s.remove());
+  let tenorScript = document.createElement('script');
+  tenorScript.src = 'https://tenor.com/embed.js?cb=' + Date.now();
+  tenorScript.async = true;
+  document.body.appendChild(tenorScript);
+}
+
+// Helper: pick a female voice (closest to cute angry girl)
+function getCuteAngryVoice(){
+  let voices = window.speechSynthesis.getVoices();
+  // Try to find a female voice by name
+  let female = voices.find(v => /female|zira|heera|samantha|veena|anya|natalie|eva/i.test(v.name));
+  return female || voices[0]; // fallback to first available
+}
+
+function showAngry(){
+  document.getElementById("content").innerHTML =
+    `<div class="tenor-gif-embed" data-postid="15884535962552606625" data-share-method="host" data-aspect-ratio="1.36066" data-width="100%"><a href="https://tenor.com/view/cute-adorable-sticker-stickers-gif-15884535962552606625">Cute Adorable GIF</a>from <a href="https://tenor.com/search/cute-gifs">Cute GIFs</a></div>`;
+  ensureTenorScriptReload();
+  document.getElementById("message").innerText = "Jhoothe 😤 Yes pe click kro!";
+
+  if ('speechSynthesis' in window) {
+    try{
+      window.speechSynthesis.cancel();
+      let audio = document.getElementById("audio");
+      try{ audio.pause(); audio.currentTime = 0; }catch(e){}
+      let utter = new SpeechSynthesisUtterance("You liar, click on the Yes button");
+      utter.lang = 'en-US';
+      utter.rate = 1;
+      utter.voice = getCuteAngryVoice();
+      window.speechSynthesis.speak(utter);
+    }catch(e){
+      let audio = document.getElementById("audio");
+      audio.currentTime = 0;
+      audio.play();
+    }
+  } else {
+    let audio = document.getElementById("audio");
+    audio.currentTime = 0;
+    audio.play();
+  }
+}
+
+function showHappy(){
+  document.getElementById("content").innerHTML =
+    `<div class="tenor-gif-embed" data-postid="17636114" data-share-method="host" data-aspect-ratio="1.37339" data-width="100%"><a href="https://tenor.com/view/baby-excited-giddy-cute-divulga-rafa-k-gif-17636114">Baby Excited GIF</a>from <a href="https://tenor.com/search/baby-gifs">Baby GIFs</a></div>`;
+  ensureTenorScriptReload();
+  document.getElementById("message").innerText = "abb hass bhi lo yrr 😂💖";
+
+  if ('speechSynthesis' in window) {
+    try{
+      window.speechSynthesis.cancel();
+      let utter = new SpeechSynthesisUtterance("oee bestiee ab hass bhi lo yaar");
+      utter.lang = 'hi-IN';
+      utter.rate = 1;
+      utter.voice = getCuteAngryVoice();
+      window.speechSynthesis.speak(utter);
+    }catch(e){
+      let audio = document.getElementById("audio");
+      audio.currentTime = 0;
+      audio.play();
+    }
+  } else {
+    let audio = document.getElementById("audio");
+    audio.currentTime = 0;
+    audio.play();
+  }
+}
+</script>
+
+</body>
+</html>
